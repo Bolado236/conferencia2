@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contagem Cega</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <link rel="stylesheet" href="css/styles.css?v=1.0.0" />
+  <script src="js/session.js?v=1.0.0" defer></script>
+</head>
+<body>
+  <h1>Contagem Cega</h1>
+  <button onclick="location.href='hub.html'" class="nav-button">⬅️ Voltar</button>
+  <button onclick="logout()" class="nav-button">Sair</button>
+  <script>
+    window.logout = function() {
+      sessionStorage.clear();
+      location.href = "login.html";
+    };
+  </script>
+  <form id="busca-produto">
+    <input type="text" id="codigo" placeholder="Código ou Código de Barras" required />
+    <button type="submit">Buscar</button>
+  </form>
+
+  <div id="camera-scanner" style="display:none; text-align: center;">
+    <video id="video" autoplay playsinline style="width:100%; max-height:300px;"></video>
+    <div style="margin-top: 10px;">
+      <button type="button" id="btn-flash">🔦 Flash</button>
+      <button type="button" id="btn-fechar">❌ Fechar</button>
+    </div>
+  </div>
+  <button type="button" id="btn-scan">📷 Ler Código de Barras</button>
+
+  <div id="produto-info" style="display:none;">
+    <p><strong>Produto:</strong> <span id="nome-produto"></span></p>
+    <p><strong>Código:</strong> <span id="codigo-produto"></span></p>
+    <form id="form-contagem">
+      <input type="number" id="quantidade-contada" placeholder="Qtd. encontrada" required min="0" />
+      <button type="submit">Confirmar Contagem</button>
+    </form>
+  </div>
+  <p id="mensagem"></p>
+
+  <script type="module" src="js/contagem1.js?v=1.0.0" defer></script>
+  <script type="module" src="js/contagem-init.js?v=1.0.0" defer></script>
+</body>
+</html>
