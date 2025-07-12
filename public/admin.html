@@ -1,69 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin - Controle de Estoque</title>
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <link rel="stylesheet" href="css/styles.css?v=1.0.0" />
-  <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
-  <link rel="preconnect" href="https://unpkg.com" crossorigin />
-  <link rel="preload" as="script" href="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js" />
-  <link rel="preload" as="script" href="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" />
-  <link rel="preload" as="script" href="https://unpkg.com/@zxing/browser@0.0.12/dist/index.min.js" />
-  <script src="js/session.js?v=1.0.0" defer></script>
+  <meta charset="UTF-8" />
+  <title>Admin</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script>
+    const tipo = sessionStorage.getItem("tipo");
+    if (tipo !== "admin") location.href = "login.html";
+  </script>
 </head>
 <body>
-  <h1>Administração de Contagens</h1>
-  <button onclick="location.href='hub.html'" class="nav-button">⬅️ Voltar</button>
-  <button onclick="logout()" class="nav-button">Sair</button>
+  <h1>Administração</h1>
+
+  <form id="cadastro-form">
+    <input type="text" id="novo-usuario" placeholder="Novo Usuário" required />
+    <input type="password" id="nova-senha" placeholder="Senha" required />
+    <select id="tipo-usuario">
+      <option value="usuario">Usuário</option>
+      <option value="admin">Admin</option>
+    </select>
+    <button type="submit">Cadastrar</button>
+  </form>
+
+  <h2>Subir base XLSX</h2>
+  <input type="file" id="file-upload" accept=".xlsx" />
+  <button id="enviar-arquivo">Converter e Enviar</button>
+
+  <p id="msg"></p>
+  <button onclick="location.href='hub.html'">⬅️ Voltar</button>
+  <button onclick="logout()">Sair</button>
+
+  <script type="module" src="js/admin.js"></script>
   <script>
-    window.logout = function() {
+    function logout() {
       sessionStorage.clear();
       location.href = "login.html";
-    };
+    }
   </script>
-
-  <!-- <section>
-    <h2>Upload de Base XLSX</h2>
-    <input type="file" id="input-xlsx" accept=".xlsx" />
-    <button id="btn-upload">Enviar Planilha</button>
-    <button id="btn-excluir">Excluir Base Atual</button>
-    <p id="msg-upload"></p>
-  </section> -->
-
-  <section>
-    <h2>Resumo da Contagem 1</h2>
-    <button id="btn-divergencias">Mostrar Itens com Divergência</button>
-    <ul id="lista-divergencias"></ul>
-  </section>
-
-  <section>
-    <h2>Monitor de Reconciliação</h2>
-    <button id="btn-reconciliacao">Atualizar Situação</button>
-    <ul id="lista-reconciliacao"></ul>
-  </section>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
-  <script src="https://unpkg.com/@zxing/browser@0.0.12/dist/index.min.js" defer></script>
-  <script type="module" src="js/adminContagem.js" defer></script>
-  <script type="module" src="js/adminReconcilia.js" defer></script>
-
-  <hr />
-  <h2>Conversor e Envio de Base XLSX → Firestore</h2>
-
-  <input type="file" id="xlsx-to-firestore" accept=".xlsx" />
-  <button id="btn-converter-upload">Converter e Enviar</button>
-
-  <p id="msg-conversor" style="color: green; margin-top: 10px;"></p>
-
-  <button id="btn-cadastro" class="nav-button">Cadastrar novo usuário</button>
-
-  <!-- Certifique-se que isso venha depois da inclusão do SheetJS -->
-  <script type="module" src="js/conversor.js" defer></script>
-  <script type="module" src="js/auth.js" defer></script>
-
 </body>
 </html>

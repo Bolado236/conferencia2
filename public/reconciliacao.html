@@ -3,39 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <title>Reconciliação</title>
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <link rel="stylesheet" href="css/styles.css?v=1.0.0" />
-  <script src="js/session.js?v=1.0.0" defer></script>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script>
+    if (!sessionStorage.getItem("usuario")) location.href = "login.html";
+  </script>
 </head>
 <body>
-  <h1>Reconciliação de Contagens</h1>
-  <button onclick="location.href='hub.html'" class="nav-button">⬅️ Voltar</button>
-  <button onclick="logout()" class="nav-button">Sair</button>
-  <script>
-    window.logout = function() {
-      sessionStorage.clear();
-      location.href = "login.html";
-    };
-  </script>
-  <form id="form-codigo">
-    <input type="text" id="codigo" placeholder="Código Produto" required />
-    <input type="number" id="quantidade" placeholder="Quantidade Contada" required />
-    <button type="submit">Registrar Contagem</button>
-  </form>
-  <p id="msg"></p>
+  <h1>Reconciliação</h1>
 
-  <div id="camera-scanner" style="display:none; text-align: center;">
-    <video id="video" autoplay playsinline style="width:100%; max-height:300px;"></video>
-    <div style="margin-top: 10px;">
-      <button type="button" id="btn-flash">🔦 Flash</button>
-      <button type="button" id="btn-fechar">❌ Fechar</button>
+  <form id="form-reconciliacao">
+    <input type="text" id="codigo" placeholder="Código" required />
+    <input type="number" id="quantidade" placeholder="Nova contagem" required />
+    <button type="submit">Atualizar</button>
+  </form>
+
+  <button type="button" id="btn-scan">📷 Ler Código</button>
+
+  <div id="camera-scanner">
+    <video id="video" autoplay playsinline></video>
+    <div>
+      <button id="btn-flash">🔦 Flash</button>
+      <button id="btn-fechar">❌ Fechar</button>
     </div>
   </div>
-  <button type="button" id="btn-scan">📷 Ler Código de Barras</button>
-  
-  <script type="module" src="js/reconciliacao.js?v=1.0.0" defer></script>
-  <script type="module" src="js/reconciliacao-init.js?v=1.0.0" defer></script>
+
+  <p id="msg"></p>
+
+  <button onclick="location.href='hub.html'">⬅️ Voltar</button>
+  <button onclick="logout()">Sair</button>
+
+  <script type="module" src="js/reconciliacao.js"></script>
+  <script>
+    function logout() {
+      sessionStorage.clear();
+      location.href = "login.html";
+    }
+  </script>
 </body>
 </html>

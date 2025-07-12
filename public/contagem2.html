@@ -3,48 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <title>Contagem Filtrada</title>
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <link rel="stylesheet" href="css/styles.css?v=1.0.0" />
-  <script src="js/session.js?v=1.0.0" defer></script>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script>
+    if (!sessionStorage.getItem("usuario")) location.href = "login.html";
+  </script>
 </head>
 <body>
   <h1>Contagem Filtrada</h1>
-  <button onclick="location.href='hub.html'" class="nav-button">⬅️ Voltar</button>
-  <button onclick="logout()" class="nav-button">Sair</button>
-  <script>
-    window.logout = function() {
-      sessionStorage.clear();
-      location.href = "login.html";
-    };
-  </script>
 
-  <section>
-    <input type="text" id="filtro-departamento" placeholder="Departamento" />
-    <input type="text" id="filtro-categoria" placeholder="Categoria" />
-    <input type="text" id="filtro-subcategoria" placeholder="Subcategoria" />
-    <button id="carregar-lista">Carregar Lista</button>
-  </section>
+  <form id="form-filtro">
+    <input type="text" id="departamento" placeholder="Departamento" required />
+    <input type="text" id="categoria" placeholder="Categoria" required />
+    <input type="text" id="subcategoria" placeholder="Subcategoria" required />
+    <button type="submit">Buscar Lista</button>
+  </form>
 
-  <div id="camera-scanner" style="display:none; text-align: center;">
-    <video id="video" autoplay playsinline style="width:100%; max-height:300px;"></video>
-    <div style="margin-top: 10px;">
-      <button type="button" id="btn-flash">🔦 Flash</button>
-      <button type="button" id="btn-fechar">❌ Fechar</button>
+  <form id="form-contagem" style="display:none;">
+    <input type="text" id="codigo" placeholder="Código de Barras ou Produto" required />
+    <input type="number" id="quantidade-contada" placeholder="Quantidade contada" required />
+    <button type="submit">Confirmar</button>
+  </form>
+
+  <button type="button" id="btn-scan">📷 Ler Código</button>
+
+  <div id="camera-scanner">
+    <video id="video" autoplay playsinline></video>
+    <div>
+      <button id="btn-flash">🔦 Flash</button>
+      <button id="btn-fechar">❌ Fechar</button>
     </div>
   </div>
-  <button type="button" id="btn-scan">📷 Ler Código de Barras</button>
 
   <ul id="lista-produtos"></ul>
-  <form id="form-busca">
-    <input type="text" id="codigo" placeholder="Código / Código de Barras" required />
-    <input type="number" id="quantidade" placeholder="Qtd Contada" required />
-    <button type="submit">Registrar</button>
-  </form>
   <p id="msg"></p>
 
-  <script type="module" src="js/contagem2.js?v=1.0.0" defer></script>
-  <script type="module" src="js/contagem2-init.js?v=1.0.0" defer></script>
+  <button onclick="location.href='hub.html'">⬅️ Voltar</button>
+  <button onclick="logout()">Sair</button>
+
+  <script type="module" src="js/contagem2.js"></script>
+  <script>
+    function logout() {
+      sessionStorage.clear();
+      location.href = "login.html";
+    }
+  </script>
 </body>
 </html>

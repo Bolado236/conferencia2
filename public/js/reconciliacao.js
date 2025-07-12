@@ -1,51 +1,44 @@
-import {
-  collection, getDocs, query, where, doc, setDoc
-} from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 import { db } from "./firebase.js";
+import {
+  doc, getDocs, updateDoc, collection, query, where
+} from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+import { iniciarScanner, pararScanner, alternarFlash } from "./camera.js";
 
-const usuarioAtual = "usuario1";
+const form = document.getElementById("form-reconciliacao");
+const msg = document.getElementById("msg");
 
-export async function registrarRecontagem(codigoProduto, quantidade) {
-  const rodada = await proximaRodada(codigoProduto);
-  const ref = doc(db, `contagens_${rodada}/${usuarioAtual}_${codigoProduto}`);
-  await setDoc(ref, {
-    usuario: usuarioAtual,
-    codigoProduto,
-    quantidade,
-    timestamp: Date.now()
-  });
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const codigo = form.codigo.value.trim();
+  const qtd = Number(form.quantidade.value);
 
-  const reconciliado = await verificarReconcilia(codigoProduto);
+  try {
+    const q = query(collection(db, "produtos"),
+      where("codigoProduto", "==", codigo)
+    );
+    const snapshot = await getDocs(q);
 
-  return reconciliado
-    ? { ok: true, msg: `Contagem registrada e reconciliada com sucesso! (rodada ${rodada})` }
-    : { ok: true, msg: `Contagem registrada. Aguardando consenso (rodada ${rodada}).` };
-}
+    if (snapshot.empty) {
+      msg.textContent = "❌ Produto não encontrado.";
+      msg.style.color = "red";
+      return;
+    }
 
-async function proximaRodada(codigoProduto) {
-  let rodada = 3;
-  while (true) {
-    const coll = collection(db, `contagens_${rodada}`);
-    const q = query(coll, where("codigoProduto", "==", codigoProduto));
-    const snap = await getDocs(q);
-    if (snap.size < 2) return rodada;
-    rodada++;
-  }
-}
-
-async function verificarReconcilia(codigoProduto) {
-  const quantidades = {};
-
-  for (let i = 1; i <= 10; i++) {
-    const coll = collection(db, `contagens_${i}`);
-    const q = query(coll, where("codigoProduto", "==", codigoProduto));
-    const snap = await getDocs(q);
-
-    snap.forEach(doc => {
-      const qt = doc.data().quantidade;
-      quantidades[qt] = (quantidades[qt] || 0) + 1;
+    await updateDoc(doc(db, "produtos", snapshot.docs[0].id), {
+      quantidade: qtd
     });
-  }
 
-  return Object.values(quantidades).some(count => count >= 2);
-}
+    msg.textContent = "✅ Reconciliação concluída.";
+    msg.style.color = "green";
+    form.reset();
+    form.codigo.focus();
+  } catch (err) {
+    console.error(err);
+    msg.textContent = "❌ Erro ao reconciliar.";
+  }
+});
+
+// Scanner
+document.getElementById("btn-scan").addEventListener("click", () => iniciarScanner("codigo"));
+document.getElementById("btn-fechar").addEventListener("click", pararScanner);
+document.getElementById("btn-flash").addEventListener("click", alternarFlash);

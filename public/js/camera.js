@@ -1,4 +1,4 @@
-import { BrowserMultiFormatReader } from "https://cdn.jsdelivr.net/npm/@zxing/browser@0.18.6/esm/index.js";
+import { BrowserMultiFormatReader } from "https://cdn.jsdelivr.net/npm/@zxing/browser@0.0.12/+esm";
 
 let codeReader = null;
 let streamTrack = null;
@@ -10,34 +10,21 @@ export async function iniciarScanner(inputId) {
   scannerContainer.style.display = "block";
   codeReader = new BrowserMultiFormatReader();
 
-  try {
-    const devices = await codeReader.listVideoInputDevices();
-    // Prefer rear camera if available
-    let deviceId = devices.find(device => /back|rear|environment/gi.test(device.label))?.deviceId;
-    if (!deviceId && devices.length > 0) {
-      deviceId = devices[0].deviceId;
+  const devices = await codeReader.listVideoInputDevices();
+  const deviceId = devices[0].deviceId;
+
+  const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId } });
+  streamTrack = stream.getVideoTracks()[0];
+  video.srcObject = stream;
+
+  codeReader.decodeFromVideoDevice(deviceId, video, (result, err) => {
+    if (result) {
+      const input = document.getElementById(inputId);
+      input.value = result.getText();
+      pararScanner();
+      input.focus();
     }
-
-    const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId } });
-    streamTrack = stream.getVideoTracks()[0];
-    video.srcObject = stream;
-
-    codeReader.decodeFromVideoDevice(deviceId, video, (result, err) => {
-      if (result) {
-        const input = document.getElementById(inputId);
-        input.value = result.getText();
-        pararScanner();
-        input.focus();
-      }
-      if (err && !(err.name === 'NotFoundException')) {
-        console.error(err);
-      }
-    });
-  } catch (error) {
-    console.error("Erro ao acessar a câmera: ", error);
-    alert("Não foi possível acessar a câmera. Verifique as permissões e tente novamente.");
-    pararScanner();
-  }
+  });
 }
 
 export function pararScanner() {

@@ -1,10 +1,8 @@
-/* Reset básico */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
 body {
   font-family: 'Segoe UI', sans-serif;
   background-color: #f4f6f8;
@@ -13,13 +11,11 @@ body {
   max-width: 700px;
   margin: auto;
 }
-
 h1, h2 {
   color: #1976d2;
   margin-bottom: 20px;
   font-size: 1.5rem;
 }
-
 form {
   background: #fff;
   padding: 15px;
@@ -27,7 +23,6 @@ form {
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
-
 input, select, button, textarea {
   width: 100%;
   padding: 12px;
@@ -35,14 +30,11 @@ input, select, button, textarea {
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 1rem;
-  transition: border-color 0.3s;
 }
-
 input:focus, select:focus, textarea:focus {
   border-color: #1976d2;
   outline: none;
 }
-
 button {
   width: auto;
   background-color: #1976d2;
@@ -54,17 +46,14 @@ button {
   border-radius: 6px;
   margin-top: 15px;
 }
-
 button:hover {
   background-color: #125ea5;
 }
-
 ul {
   list-style-type: none;
   margin: 10px 0;
   padding: 0;
 }
-
 ul li {
   background-color: #fff;
   border: 1px solid #ddd;
@@ -73,23 +62,20 @@ ul li {
   border-radius: 6px;
   font-size: 0.95rem;
 }
-
 .nav-button {
   margin: 10px 0;
 }
-
 #msg, #feedback, #mensagem {
   font-weight: bold;
   margin-top: 12px;
 }
 
-/* Scanner de câmera */
+/* Scanner */
 #camera-scanner {
   display: none;
   text-align: center;
   margin-top: 20px;
 }
-
 #camera-scanner video {
   width: 100%;
   max-width: 360px;
@@ -100,7 +86,6 @@ ul li {
   display: block;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
-
 #camera-scanner > div {
   margin-top: 12px;
   display: flex;
@@ -108,7 +93,6 @@ ul li {
   gap: 12px;
   flex-wrap: wrap;
 }
-
 #camera-scanner button {
   padding: 10px 20px;
   font-size: 1.1rem;
@@ -119,49 +103,32 @@ ul li {
   color: white;
   transition: background-color 0.3s ease;
 }
-
 #camera-scanner button:hover {
   background-color: #125ea5;
 }
 
-/* Responsividade geral */
+/* Responsivo */
 @media (max-width: 768px) {
   body {
     padding: 12px;
     max-width: 100%;
   }
-
   form {
     padding: 12px;
   }
-
   h1, h2 {
     font-size: 1.3rem;
     margin-bottom: 16px;
   }
-
   input, select, textarea, button {
     font-size: 1rem;
   }
-
   button {
     width: 100%;
     padding: 12px;
   }
-
-  #camera-scanner video {
-    width: 100%;
-    max-width: 100%;
-  }
-
   #camera-scanner > div {
     flex-direction: column;
     gap: 10px;
-  }
-
-  #camera-scanner button {
-    width: 100%;
-    font-size: 1rem;
-    padding: 10px;
   }
 }
