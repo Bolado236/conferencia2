@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <title>Reconciliação</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/@ericblade/quagga2@1.2.6/dist/quagga.js"></script>
+  <script src="js/camera.js"></script>
   <link rel="stylesheet" href="css/styles.css" />
   <script>
     if (!sessionStorage.getItem("usuario")) location.href = "login.html";
@@ -17,10 +20,10 @@
     <button type="submit">Atualizar</button>
   </form>
 
-  <button type="button" id="btn-scan">📷 Ler Código</button>
+  <button type="button" onclick="iniciarScanner('codigo')">📷 Ler Código</button>
 
-  <div id="camera-scanner">
-    <video id="video" autoplay playsinline></video>
+  <div id="camera-scanner" style="display:none;">
+    <!-- Removido o div com id camera para evitar duplicidade -->
     <div>
       <button id="btn-flash">🔦 Flash</button>
       <button id="btn-fechar">❌ Fechar</button>
@@ -39,5 +42,9 @@
       location.href = "login.html";
     }
   </script>
+  <div id="cameraContainer" style="display:none; text-align:center; padding:10px;">
+    <div id="camera" style="width: 100%; max-width: 400px; margin: 0 auto; border-radius: 8px;"></div>
+    <button onclick="fecharScanner()">❌ Fechar</button>
+  </div>
 </body>
 </html>

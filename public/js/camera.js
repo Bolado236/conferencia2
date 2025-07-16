@@ -1,45 +1,42 @@
-import { BrowserMultiFormatReader } from "https://cdn.jsdelivr.net/npm/@zxing/browser@0.0.12/+esm";
+window.iniciarScanner = function (inputId) {
+  const container = document.getElementById("cameraContainer");
+  container.style.display = "block";
 
-let codeReader = null;
-let streamTrack = null;
+  Quagga.init({
+    inputStream: {
+      type: "LiveStream",
+      target: container.querySelector("#camera"),
+      constraints: {
+        facingMode: "environment"
+      }
+    },
+    decoder: {
+      readers: ["code_128_reader", "ean_reader", "ean_8_reader"]
+    }
+  }, function (err) {
+    if (err) {
+      console.error(err);
+      alert("Erro ao iniciar câmera");
+      return;
+    }
+    Quagga.start();
+  });
 
-export async function iniciarScanner(inputId) {
-  const video = document.getElementById("video");
-  const scannerContainer = document.getElementById("camera-scanner");
+  Quagga.onDetected(function (result) {
+    const code = result.codeResult.code;
+    Quagga.stop();
+    Quagga.offDetected();
+    container.style.display = "none";
 
-  scannerContainer.style.display = "block";
-  codeReader = new BrowserMultiFormatReader();
-
-  const devices = await codeReader.listVideoInputDevices();
-  const deviceId = devices[0].deviceId;
-
-  const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId } });
-  streamTrack = stream.getVideoTracks()[0];
-  video.srcObject = stream;
-
-  codeReader.decodeFromVideoDevice(deviceId, video, (result, err) => {
-    if (result) {
-      const input = document.getElementById(inputId);
-      input.value = result.getText();
-      pararScanner();
+    const input = document.getElementById(inputId);
+    if (input) {
+      input.value = code;
       input.focus();
     }
   });
-}
+};
 
-export function pararScanner() {
-  const scannerContainer = document.getElementById("camera-scanner");
-  scannerContainer.style.display = "none";
-
-  if (codeReader) codeReader.reset();
-  if (streamTrack) streamTrack.stop();
-}
-
-export function alternarFlash() {
-  if (!streamTrack) return;
-  const capabilities = streamTrack.getCapabilities();
-  if (capabilities.torch) {
-    const current = streamTrack.getSettings().torch || false;
-    streamTrack.applyConstraints({ advanced: [{ torch: !current }] });
-  }
-}
+window.fecharScanner = function () {
+  Quagga.stop();
+  document.getElementById("cameraContainer").style.display = "none";
+};
