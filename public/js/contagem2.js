@@ -2,7 +2,7 @@ import { db } from "./firebase.js";
 import {
   collection, query, where, getDocs, doc, updateDoc
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
-import { iniciarScanner, pararScanner, alternarFlash } from "./camera.js";
+import { iniciarScanner, pararScanner } from "./camera.js";
 
 const formFiltro = document.getElementById("form-filtro");
 const formContagem = document.getElementById("form-contagem");

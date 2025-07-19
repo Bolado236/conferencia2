@@ -22,14 +22,6 @@
 
   <button type="button" onclick="iniciarScanner('codigo')">📷 Ler Código</button>
 
-  <div id="camera-scanner">
-    <div id="camera" style="width: 100%; max-width: 400px;"></div>
-    <div>
-      <button id="btn-flash">🔦 Flash</button>
-      <button id="btn-fechar">❌ Fechar</button>
-    </div>
-  </div>
-
   <div id="produto-info" style="display:none;"></div>
   <p id="msg"></p>
 
@@ -44,7 +36,7 @@
     }
   </script>
   <div id="cameraContainer" style="display:none">
-    <video id="camera" autoplay></video>
+    <div id="camera" style="width:100%; max-width:400px; margin:auto;"></div>
     <button onclick="fecharScanner()">❌ Fechar</button>
   </div>
 </body>

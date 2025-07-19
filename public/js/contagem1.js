@@ -2,7 +2,7 @@ import { db } from "./firebase.js";
 import {
   collection, doc, getDocs, updateDoc, query, where
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
-import { iniciarScanner, pararScanner, alternarFlash } from "./camera.js";
+import { iniciarScanner, pararScanner } from "./camera.js";
 
 const form = document.getElementById("form-contagem");
 const msg = document.getElementById("msg");
@@ -49,6 +49,3 @@ form.addEventListener("submit", async (e) => {
 });
 
 // Scanner de câmera
-document.getElementById("btn-scan").addEventListener("click", () => iniciarScanner("codigo"));
-document.getElementById("btn-fechar").addEventListener("click", pararScanner);
-document.getElementById("btn-flash").addEventListener("click", alternarFlash);

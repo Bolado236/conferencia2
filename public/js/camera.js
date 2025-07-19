@@ -4,8 +4,9 @@ window.iniciarScanner = function (inputId) {
 
   Quagga.init({
     inputStream: {
+      name: "Live",
       type: "LiveStream",
-      target: container.querySelector("#camera"),
+      target: document.querySelector("#camera"),
       constraints: {
         facingMode: "environment"
       }
@@ -16,7 +17,7 @@ window.iniciarScanner = function (inputId) {
   }, function (err) {
     if (err) {
       console.error(err);
-      alert("Erro ao iniciar câmera");
+      alert("Erro ao iniciar scanner");
       return;
     }
     Quagga.start();
@@ -24,15 +25,9 @@ window.iniciarScanner = function (inputId) {
 
   Quagga.onDetected(function (result) {
     const code = result.codeResult.code;
-    Quagga.stop();
-    Quagga.offDetected();
-    container.style.display = "none";
-
-    const input = document.getElementById(inputId);
-    if (input) {
-      input.value = code;
-      input.focus();
-    }
+    document.getElementById(inputId).value = code;
+    document.getElementById(inputId).focus();
+    fecharScanner();
   });
 };
 
